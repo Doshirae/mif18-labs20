@@ -45,8 +45,8 @@ allez sûrement le faire sur votre ordi perso).
 Pour que vous puissiez faire ce TP/tuto, il faut donc que vous
 disposiez d'une distribution GNU/Linux qui utilise systemd, et qui
 lance un systemd à la connexion de chaque utilisateur : avec Ubuntu,
-c'est vérifié ; avec Debian ça doit fonctionner, et avec Fedora
-aussi. Par contre, les auteurs ne peuvent que croiser les doigts pour
+c'est vérifié ; avec Debian ça doit fonctionner, avec Fedora
+aussi et Archlinux également. Par contre, les auteurs ne peuvent que croiser les doigts pour
 les autres distribs...
 
 Notez aussi que les auteurs de ce TP/tuto ne sont pas, pour de vrai,
@@ -88,7 +88,7 @@ dans votre config systemd par le suite.
 Créez un script `$HOME/bin/mini-web.sh` avec le contenu initial
 suivant :
 ```
-!/bin/sh
+#!/bin/sh
 
 nc -l 8888 -q 0 <<EOF
 HTTP/1.1 200 OK
@@ -113,7 +113,7 @@ aussi :
 
 * l'utilisation du *couteau-suisse TCP-UDP* `nc` ; les auteurs de ces
 lignes ne sont pas des experts, mais s'est bien pratique de savoir
-jouer un peu avec...
+jouer un peu avec... À noter qu'il existe plusieurs versions de nc, et que la version de ce TP est celle d'OpenBSD. Si vous utilisez la version de GNU, la commande sera alors `nc -l -p 8888 -c`.
 
 * l'utilisation d'un *here document*
   [https://fr.wikipedia.org/wiki/Here_document].
@@ -139,7 +139,7 @@ Description=Page web de test sur le port 8888
 
 [Service]
 Type=simple
-ExecStart=/home/nlouvet/bin/mini-web.sh
+ExecStart=/home/nlouvet/bin/mini-web.sh # À modifier avec le chemin de votre script
 
 [Install]
 WantedBy=default.target
@@ -285,7 +285,7 @@ Logiquement, `systemctl` doit vous répondre qu'il crée un lien
 symbolique qui va bien pour que le service soit relancé à votre la
 prochaine connexion.
 
-Pour bien, vous devez maintenant vous déconnecter de votre session
+Pour bien être sûr, vous devez maintenant vous déconnecter de votre session
 graphique, voir redémarrer votre ordi, pour vérifier que vous
 retrouvez bien le service `mini-web.service` frais et dispo lorsque
 vous vous reconnectez !
@@ -336,6 +336,3 @@ Pour la suite, vous pouvez utiliser la commande `systemctl` comme
 précédemment, mais il faut l'exécuter sur le compte du
 super-utilisateur ; il faudra faire par exemple `sudo systemctl
 daemon-reload` pour recharger la config (plus de `--user`).
-
-
-
